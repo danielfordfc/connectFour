@@ -80,8 +80,8 @@ def draw_board(board):
                     int(c * SQUARE_SIZE + (0.5 * SQUARE_SIZE)), int((r * SQUARE_SIZE) + int((1.5 * SQUARE_SIZE)))),
                                    int(SQUARE_SIZE * 0.4))
             elif board[r][c] == 2:
-                print(str(board[r][c]))
-                pygame.draw.circle(screen, GREEN, (
+                # print(str(board[r][c]))
+                pygame.draw.circle(screen, YELLOW, (
                     int(c * SQUARE_SIZE + (0.5 * SQUARE_SIZE)), int((r * SQUARE_SIZE) + int((1.5 * SQUARE_SIZE)))),
                                    int(SQUARE_SIZE * 0.4))
 
@@ -94,6 +94,7 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
 
 # Define Dimensions of board that dynamically scale on user declared sizing.
 SQUARE_SIZE = 100
@@ -112,6 +113,20 @@ while not game_over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+
+        # Add new event for scrolling piece when cursor is in the top bar.
+        if event.type == pygame.MOUSEMOTION:
+
+            # Draw black rectangle to destroy old circle
+            pygame.draw.rect(screen, BLACK, (0, 0, WIDTH, SQUARE_SIZE))
+            posx = event.pos[0]
+            if turn % 2 == 1:
+                pygame.draw.circle(screen, RED, (posx, int(SQUARE_SIZE/2)), int(SQUARE_SIZE * 0.4))
+                pygame.display.update()
+            else:
+                pygame.draw.circle(screen, YELLOW, (posx, int(SQUARE_SIZE / 2)), int(SQUARE_SIZE * 0.4))
+                pygame.display.update()
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Calculate x position of click
             # selection = int(round((event.pos[0] / 100) -((event.pos[0] % 100) / 100), 1))
